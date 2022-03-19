@@ -1,0 +1,24 @@
+#r "Newtonsoft.Json"
+
+using System.Text;
+using System.Net;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
+
+public static async Task<IActionResult> Run(HttpRequest req, ILogger log)
+{
+    log.LogInformation("C# HTTP trigger function processed a request.");
+
+var deliverersArray = new[]
+{
+     new {name="DWo", price=12.5},
+     new {name="xVK", price=30.5},
+};
+
+
+var deliverersJson = JsonConvert.SerializeObject(deliverersArray);
+
+return new JsonResult(deliverersArray);
+
+}
