@@ -17,7 +17,7 @@ namespace IEGEasyCreditCardService.Controllers
         [HttpGet]
         public string Get(int id)
         {
-
+            _logger.LogInformation("Hallo");
             return "value" + id;
         }
         // POST api/values
