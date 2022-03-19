@@ -25,6 +25,7 @@ namespace IEGEasyCreditCardService.Controllers
         public IActionResult Post([FromBody] CreditcardTransaction creditcardTransaction)
         {
             _logger.LogInformation($"TransactionInfo Number: {creditcardTransaction.CreditcardNumber} Amount:{creditcardTransaction.Amount} Receiver: { creditcardTransaction.ReceiverName}");
+            //log geht mit IEG
             return CreatedAtAction("Get", new { id = System.Guid.NewGuid() });
         }
     }
