@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
+using MeiShop.Services;
 
 namespace MeiShop.Controllers
 {
@@ -10,12 +11,12 @@ namespace MeiShop.Controllers
     public class CashDeskController : ControllerBase
     {
         private readonly ILogger<CashDeskController> _logger;
-        private static readonly string creditcardServiceBaseAddress = "http://iegeasycreditcardservice.azurewebsites.net/";
-        private readonly IConfiguration Configuration;
-        public CashDeskController(ILogger<CashDeskController> logger, IConfiguration configuration)
+        private readonly RoundRobinService _roundRobinService;
+
+        public CashDeskController(ILogger<CashDeskController> logger, RoundRobinService roundRobinService)
         {
             _logger = logger;
-            Configuration = configuration;
+            _roundRobinService = roundRobinService;
         }
 
         [HttpGet]
@@ -29,8 +30,6 @@ namespace MeiShop.Controllers
         {
             _logger.LogInformation($"TransactionInfo Creditcard: {basket.CustomerCreditCardnumber} Product:{basket.Product} Amount: {basket.AmountInEuro}");
 
-            var creditcardServiceBaseAddress = Configuration["CreditcardServiceBaseAddress"];
-
             //Mapping
             CreditcardTransaction creditCardTransaction = new CreditcardTransaction()
             {
@@ -40,13 +39,28 @@ namespace MeiShop.Controllers
                 ReceiverName = basket.Vendor
             };
 
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri(creditcardServiceBaseAddress);
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            HttpResponseMessage response = client.PostAsJsonAsync(creditcardServiceBaseAddress + "/api/CreditcardTransactions", creditCardTransaction).Result;
-            response.EnsureSuccessStatusCode();
+            int retries = 0;
+            do
+            {
+                var creditcardServiceBaseAddress = _roundRobinService.GetBaseAddress();
 
+                try
+                {
+                    HttpClient client = new HttpClient();
+                    client.BaseAddress = new Uri(creditcardServiceBaseAddress);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    HttpResponseMessage response = client.PostAsJsonAsync(creditcardServiceBaseAddress + "/api/CreditcardTransactions", creditCardTransaction).Result;
+                    response.EnsureSuccessStatusCode();
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error calling {ServiceUrl}", creditcardServiceBaseAddress);
+                    retries++;
+                }
+
+            } while (retries < 3);
 
             return CreatedAtAction("Get", new { id = System.Guid.NewGuid() }, creditCardTransaction);
         }
