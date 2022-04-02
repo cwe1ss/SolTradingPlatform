@@ -9,16 +9,17 @@ namespace IEGEasyCreditCardService.Controllers
     public class CreditcardTransactionsController : ControllerBase
     {
         private readonly ILogger<CreditcardTransactionsController> _logger;
+        private static Dictionary <String,CreditcardTransaction> _creditcardTransactions = new();
 
         public CreditcardTransactionsController(ILogger<CreditcardTransactionsController> logger)
         {
             _logger = logger;
         }
         [HttpGet]
-        public string Get(int id)
+        public object Get(string id)
         {
             //_logger.LogInformation("Hallo");
-            return "value" + id;
+            return _creditcardTransactions[id];
         }
         // POST api/values
         [HttpPost]
@@ -26,7 +27,9 @@ namespace IEGEasyCreditCardService.Controllers
         {
             _logger.LogInformation($"TransactionInfo Number: {creditcardTransaction.CreditcardNumber} Amount:{creditcardTransaction.Amount} Receiver: { creditcardTransaction.ReceiverName}");
             //log geht mit IEG
-            return CreatedAtAction("Get", new { id = System.Guid.NewGuid() });
+            string id = System.Guid.NewGuid().ToString();
+            _creditcardTransactions.Add(id,creditcardTransaction);
+            return CreatedAtAction("Get", new { id });
         }
     }
 }

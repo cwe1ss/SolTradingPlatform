@@ -36,6 +36,7 @@ namespace MeiShop.Controllers
             {
                 Amount = basket.AmountInEuro,
                 CreditcardNumber = basket.CustomerCreditCardnumber,
+                CreditcardType = "American",
                 ReceiverName = basket.Vendor
             };
 
