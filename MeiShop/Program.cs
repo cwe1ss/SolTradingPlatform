@@ -9,6 +9,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+
 // Das RoundRobinService muss Request-übergreifend die einzelnen Adressen durchlaufen
 // und wird daher als Singleton-Service registriert.
 builder.Services.AddSingleton<RoundRobinService>();
