@@ -11,7 +11,7 @@ namespace MeiShop.Controllers
     public class CashDeskController : ControllerBase
     {
         private readonly ILogger<CashDeskController> _logger;
-        private static readonly string creditcardServiceBaseAddress = "http://iegeasycreditcardservice.azurewebsites.net/";
+        private static readonly string creditcardServiceBaseAddress = "https://iegeasycreditcardservice2022.azurewebsites.net/";
         private readonly IConfiguration Configuration;
         public CashDeskController(ILogger<CashDeskController> logger, IConfiguration configuration)
         {
@@ -30,8 +30,8 @@ namespace MeiShop.Controllers
         {
             _logger.LogInformation($"TransactionInfo Creditcard: {basket.CustomerCreditCardnumber} Product:{basket.Product} Amount: {basket.AmountInEuro}");
 
-            //var creditcardServiceBaseAddress = Configuration["CreditcardServiceBaseAddress"];
-            var creditcardServiceBaseAddress = GetCreditCardTransactionsURIFromConsul().AbsolutePath;
+            var creditcardServiceBaseAddress = Configuration["CreditcardServiceBaseAddress"];
+           // var creditcardServiceBaseAddress = GetCreditCardTransactionsURIFromConsul().AbsolutePath;
             //Mapping
             CreditcardTransaction creditCardTransaction = new CreditcardTransaction()
             {
