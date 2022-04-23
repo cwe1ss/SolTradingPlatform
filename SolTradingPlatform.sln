@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 		Azure Function.txt = Azure Function.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DiscoveryWithConsul", "DiscoveryWithConsul", "{B8FBB426-BE33-4B45-B17F-EA38FFE9D913}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsulDiscovery", "ConsulDiscovery\ConsulDiscovery.csproj", "{026C92E1-BB6B-4FCA-863D-5707F422D9A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,9 +30,16 @@ Global
 		{5DB8F19B-9A40-4A40-AE3B-43729942F57E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DB8F19B-9A40-4A40-AE3B-43729942F57E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DB8F19B-9A40-4A40-AE3B-43729942F57E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{026C92E1-BB6B-4FCA-863D-5707F422D9A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{026C92E1-BB6B-4FCA-863D-5707F422D9A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{026C92E1-BB6B-4FCA-863D-5707F422D9A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{026C92E1-BB6B-4FCA-863D-5707F422D9A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{026C92E1-BB6B-4FCA-863D-5707F422D9A1} = {B8FBB426-BE33-4B45-B17F-EA38FFE9D913}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {93C042C2-F1A9-4F52-B941-5D74A4E183E2}
