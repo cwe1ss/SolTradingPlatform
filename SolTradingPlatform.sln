@@ -22,6 +22,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormDraftService", "FormDra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuestionnaireAnswersService", "QuestionnaireAnswersService\QuestionnaireAnswersService.csproj", "{143DAE0C-6F39-4D54-B99A-699C4F6258F1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuestionnaireFilledEvent", "QuestionnaireFilledEvent\QuestionnaireFilledEvent.csproj", "{5BE8A922-2FE6-45EB-9B09-EF0D7E993C26}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{143DAE0C-6F39-4D54-B99A-699C4F6258F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{143DAE0C-6F39-4D54-B99A-699C4F6258F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{143DAE0C-6F39-4D54-B99A-699C4F6258F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BE8A922-2FE6-45EB-9B09-EF0D7E993C26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BE8A922-2FE6-45EB-9B09-EF0D7E993C26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BE8A922-2FE6-45EB-9B09-EF0D7E993C26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BE8A922-2FE6-45EB-9B09-EF0D7E993C26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
