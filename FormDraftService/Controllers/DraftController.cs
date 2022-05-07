@@ -12,11 +12,12 @@ namespace FormDraftService.Controllers
     public class DraftController : ControllerBase
     {
         //DB aufsetzen und ein Form installieren
-        private static IEnumerable<FormDraft> _allFormDrafts = new List<FormDraft>()
+        private static IList<FormDraft> _allFormDrafts = new List<FormDraft>()
         {
             new FormDraft(){ 
                 FormId = "0815",
                 Name = "Motivationsumfrage",
+                Status = "draft",
                 Description = "Umfrage zur allgemeinen Motivation am heutigen Tag.",
                 Questions = new[]
                 {
@@ -37,15 +38,16 @@ namespace FormDraftService.Controllers
 
         // GET api/<DraftController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public FormDraft Get(string id)
         {
-            return _allFormDrafts.ToString();
+            return _allFormDrafts.Where(x => x.FormId == id).First();
         }
 
         // POST api/<DraftController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] FormDraft value)
         {
+            _allFormDrafts.Add(value);
         }
 
         // PUT api/<DraftController>/5
