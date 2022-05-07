@@ -18,6 +18,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsulDiscovery", "ConsulDi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductCatalogService", "ProductCatalogService\ProductCatalogService.csproj", "{70F3BC8A-691B-4623-9787-95CD92BF5BF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormDraftService", "FormDraftService\FormDraftService.csproj", "{37B81395-6C9C-4596-804D-D6CFBBD20747}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{70F3BC8A-691B-4623-9787-95CD92BF5BF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70F3BC8A-691B-4623-9787-95CD92BF5BF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70F3BC8A-691B-4623-9787-95CD92BF5BF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37B81395-6C9C-4596-804D-D6CFBBD20747}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37B81395-6C9C-4596-804D-D6CFBBD20747}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37B81395-6C9C-4596-804D-D6CFBBD20747}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37B81395-6C9C-4596-804D-D6CFBBD20747}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
