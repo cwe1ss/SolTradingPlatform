@@ -1,5 +1,5 @@
-﻿using MeiShop.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Consul;
+using MeiShop.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
 using MeiShop.Services;
@@ -10,12 +10,16 @@ namespace MeiShop.Controllers
     [ApiController]
     public class CashDeskController : ControllerBase
     {
+        //private static readonly string creditcardServiceBaseAddress = "https://iegeasycreditcardservice2022.azurewebsites.net/";
+
         private readonly ILogger<CashDeskController> _logger;
+        private readonly IConfiguration _configuration;
         private readonly RoundRobinService _roundRobinService;
 
-        public CashDeskController(ILogger<CashDeskController> logger, RoundRobinService roundRobinService)
+        public CashDeskController(ILogger<CashDeskController> logger, IConfiguration configuration, RoundRobinService roundRobinService)
         {
             _logger = logger;
+            _configuration = configuration;
             _roundRobinService = roundRobinService;
         }
 
@@ -29,6 +33,9 @@ namespace MeiShop.Controllers
         public IActionResult Post([FromBody] Basket basket)
         {
             _logger.LogInformation($"TransactionInfo Creditcard: {basket.CustomerCreditCardnumber} Product:{basket.Product} Amount: {basket.AmountInEuro}");
+
+            //var creditcardServiceBaseAddress = Configuration["CreditcardServiceBaseAddress"];
+            // var creditcardServiceBaseAddress = GetCreditCardTransactionsURIFromConsul().AbsolutePath;
 
             //Mapping
             CreditcardTransaction creditCardTransaction = new CreditcardTransaction()
@@ -63,6 +70,35 @@ namespace MeiShop.Controllers
             } while (retries < 3);
 
             return CreatedAtAction("Get", new { id = System.Guid.NewGuid() }, creditCardTransaction);
+        }
+
+     
+
+        private Uri GetCreditCardTransactionsURIFromConsul()
+        {
+
+            List<Uri> _serverUrls = new List<Uri>();
+            var consuleClient = new ConsulClient(c => c.Address = new Uri("http://127.0.0.1:8500"));
+            var services = consuleClient.Agent.Services().Result.Response;
+            foreach (var service in services)
+            {
+                var isCreditCardApi = service.Value.Tags.Any(t => t == "CreditCard");
+                if (isCreditCardApi)
+                {
+                    try
+                    {
+                        var serviceUri = new Uri($"{service.Value.Address}:{service.Value.Port}");
+                        _serverUrls.Add(serviceUri);
+                    }
+                    catch (Exception)
+                    {
+
+                        ;
+                    }
+
+                }
+            }
+            return _serverUrls.FirstOrDefault();
         }
     }
 }

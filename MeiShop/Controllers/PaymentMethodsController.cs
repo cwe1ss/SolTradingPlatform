@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
 using System.Net.Http;
-
+using Polly;
 
 namespace MeiShop.Controllers
 {
@@ -12,7 +12,8 @@ namespace MeiShop.Controllers
     {
         //https://docs.microsoft.com/en-us/aspnet/web-api/overview/advanced/calling-a-web-api-from-a-net-client
         private readonly ILogger<PaymentMethodsController> _logger;
-      
+        private static readonly string creditcardServiceBaseAddress = "https://iegeasycreditcardservice2022.azurewebsites.net/";
+
         private readonly IConfiguration Configuration;
 
 
@@ -22,36 +23,36 @@ namespace MeiShop.Controllers
             Configuration = configuration;
         }
         [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet]
+        public async Task<IEnumerable<string>> GetAsync()
         {
-            List<string> acceptedPaymentMethods = new List<string>();
-            _logger.LogInformation("Accepted Paymentmethods");
-         
+            List<string> acceptedPaymentMethods = null;//= new string[] { "Diners", "Master" };
+            _logger.LogError("Accepted Paymentmethods");
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(creditcardServiceBaseAddress);
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            using (HttpClient client = new HttpClient())
+            var response = await Policy
+           .HandleResult<HttpResponseMessage>(message => !message.IsSuccessStatusCode)
+           .WaitAndRetryAsync(3, i => TimeSpan.FromSeconds(2), (result, timeSpan, retryCount, context) =>
+           {
+               _logger.LogWarning($"Request failed with {result.Result.StatusCode}. Waiting {timeSpan} before next retry. Retry attempt {retryCount}");
+           })
+           .ExecuteAsync(() => httpClient.GetAsync(creditcardServiceBaseAddress + "/api/AcceptedCreditCards"));
+
+            if (response.IsSuccessStatusCode)
             {
-                var creditcardServiceBaseAddress = Configuration["CreditcardServiceBaseAddress"];
-                client.BaseAddress = new Uri(creditcardServiceBaseAddress);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                acceptedPaymentMethods = await response.Content.ReadAsAsync<List<string>>();
 
-
-                HttpResponseMessage response = client.GetAsync(creditcardServiceBaseAddress + "/api/AcceptedCreditCards").Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    acceptedPaymentMethods = response.Content.ReadAsAsync<List<string>>().Result;
-                }
+                _logger.LogInformation("Response was successful.");
+            }
+            else
+            {
+                _logger.LogError($"Response failed. Status code {response.StatusCode}");
             }
 
-            if (acceptedPaymentMethods != null)
-            {
-                foreach (var item in acceptedPaymentMethods)
-                {
-                    _logger.LogInformation("Paymentmethod {0}", new object[] { item });
 
-                }
-
-            }
             return acceptedPaymentMethods;
         }
     }
