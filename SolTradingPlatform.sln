@@ -18,7 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsulDiscovery", "ConsulDi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductCatalogService", "ProductCatalogService\ProductCatalogService.csproj", "{70F3BC8A-691B-4623-9787-95CD92BF5BF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormDraftService", "FormDraftService\FormDraftService.csproj", "{37B81395-6C9C-4596-804D-D6CFBBD20747}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormDraftService", "FormDraftService\FormDraftService.csproj", "{37B81395-6C9C-4596-804D-D6CFBBD20747}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuestionnaireAnswersService", "QuestionnaireAnswersService\QuestionnaireAnswersService.csproj", "{143DAE0C-6F39-4D54-B99A-699C4F6258F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +48,10 @@ Global
 		{37B81395-6C9C-4596-804D-D6CFBBD20747}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37B81395-6C9C-4596-804D-D6CFBBD20747}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37B81395-6C9C-4596-804D-D6CFBBD20747}.Release|Any CPU.Build.0 = Release|Any CPU
+		{143DAE0C-6F39-4D54-B99A-699C4F6258F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{143DAE0C-6F39-4D54-B99A-699C4F6258F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{143DAE0C-6F39-4D54-B99A-699C4F6258F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{143DAE0C-6F39-4D54-B99A-699C4F6258F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
