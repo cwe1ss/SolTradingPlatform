@@ -26,7 +26,7 @@ namespace MeiShop.Controllers
         [HttpGet]
         public async Task<IEnumerable<string>> GetAsync()
         {
-            List<string> acceptedPaymentMethods = null;//= new string[] { "Diners", "Master" };
+            List<string> acceptedPaymentMethods = new();//= new string[] { "Diners", "Master" };
             _logger.LogError("Accepted Paymentmethods");
             var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri(creditcardServiceBaseAddress);
