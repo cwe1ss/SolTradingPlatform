@@ -16,9 +16,9 @@ namespace QuestionnaireAnswersService.Controllers
            // new FormDraft()
            
         };
-        public static string FormDraftServiceBaseAddress = "https://configservice20220507144709.azurewebsites.net/";
+        public static string FormDraftServiceBaseAddress = "https://configservice20220507144709.azurewebsites.net/";       
 
-       
+
         [HttpGet("{serviceType}")]
         public IActionResult Get(string serviceType)
         {
@@ -27,7 +27,7 @@ namespace QuestionnaireAnswersService.Controllers
             client.BaseAddress = new Uri(FormDraftServiceBaseAddress);
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            HttpResponseMessage response = client.GetAsync(FormDraftServiceBaseAddress + "/serviceType").Result;
+            HttpResponseMessage response = client.GetAsync(FormDraftServiceBaseAddress + "/api/LoadBalancer/"+ serviceType).Result;
             response.EnsureSuccessStatusCode();
 
             return Ok(response.Content.ReadAsStringAsync().Result);
