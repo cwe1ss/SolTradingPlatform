@@ -40,10 +40,10 @@ namespace QuestionnaireAnswersService.Controllers
         {
            
             
-            //check FormDraft for error
-           // checkFormDraft(_allFormDraft);
-            // save data
-          //  saveFormDraft(_allFormDraft);
+             //check FormDraft for error
+            //checkFormDraft(_allFormDraft);
+            //save data
+            //saveFormDraft(_allFormDraft);
             //send event to FragebogenAusgefülltEvent 
            
         }
