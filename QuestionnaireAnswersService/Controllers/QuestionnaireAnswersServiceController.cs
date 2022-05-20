@@ -32,20 +32,22 @@ namespace QuestionnaireAnswersService.Controllers
 
             return Ok(response.Content.ReadAsStringAsync().Result);
 
+
         }
 
         // POST api/<QuestionnaireAnswersServiceController>
         [HttpPost]
         public void Post([FromBody] string value)
         {
-           
-            
-             //check FormDraft for error
+
+
+            //check FormDraft for error
             //checkFormDraft(_allFormDraft);
             //save data
+            //Ausgefüllten Fragebogen speichern 
             //saveFormDraft(_allFormDraft);
             //send event to FragebogenAusgefülltEvent 
-           
+
         }
 
         // PUT api/<QuestionnaireAnswersServiceController>/5
