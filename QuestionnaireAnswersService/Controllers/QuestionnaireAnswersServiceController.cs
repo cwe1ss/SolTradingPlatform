@@ -34,19 +34,23 @@ namespace QuestionnaireAnswersService.Controllers
 
 
         }
+        [HttpGet]
+        public object Get()
+        {
+            return _allFormDraft;
+        }
 
         // POST api/<QuestionnaireAnswersServiceController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] FormDraft formDraft)
         {
-
-
             //check FormDraft for error
             //checkFormDraft(_allFormDraft);
-            //save data
             //Ausgefüllten Fragebogen speichern 
-            //saveFormDraft(_allFormDraft);
+            _allFormDraft.Add(formDraft);
+            return Ok(formDraft);
             //send event to FragebogenAusgefülltEvent 
+
 
         }
 
