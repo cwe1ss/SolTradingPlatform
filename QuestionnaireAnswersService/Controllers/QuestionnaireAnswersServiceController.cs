@@ -51,19 +51,6 @@ namespace QuestionnaireAnswersService.Controllers
             return Ok(formDraft);
             //send event to FragebogenAusgefülltEvent 
 
-
-        }
-
-        // PUT api/<QuestionnaireAnswersServiceController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<QuestionnaireAnswersServiceController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
