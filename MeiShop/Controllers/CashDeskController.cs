@@ -34,7 +34,7 @@ namespace MeiShop.Controllers
         {
             _logger.LogInformation($"TransactionInfo Creditcard: {basket.CustomerCreditCardnumber} Product:{basket.Product} Amount: {basket.AmountInEuro}");
 
-            //var creditcardServiceBaseAddress = Configuration["CreditcardServiceBaseAddress"];
+            //var creditcardServiceBaseAddress = _configuration["CreditcardServiceBaseAddress"];
             // var creditcardServiceBaseAddress = GetCreditCardTransactionsURIFromConsul().AbsolutePath;
 
             //Mapping
