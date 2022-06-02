@@ -2,10 +2,10 @@
 {
     public class FormDraft
     {
-        public String FormId { get; set; }
-        public String Name { get; set; }
-        public String Status { get; set; }
-        public String Description { get; set; }
-        public IEnumerable<Question> Questions { get; set; }
+        public string FormId { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public IEnumerable<Question> Questions { get; set; } = new List<Question>();
     }
 }

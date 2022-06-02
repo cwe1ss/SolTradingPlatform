@@ -1,27 +1,25 @@
 ﻿using FormDraftService.Models;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace FormDraftService.Controllers
 {
-
-
     [Route("api/[controller]")]
     [ApiController]
     public class DraftController : ControllerBase
     {
         //DB aufsetzen und ein Form installieren
-        private static IList<FormDraft> _allFormDrafts = new List<FormDraft>()
+        private static List<FormDraft> _allFormDrafts = new List<FormDraft>()
         {
-            new FormDraft(){ 
+            new FormDraft()
+            {
                 FormId = "0815",
                 Name = "Motivationsumfrage",
                 Status = "draft",
                 Description = "Umfrage zur allgemeinen Motivation am heutigen Tag.",
                 Questions = new[]
                 {
-                    new Question(){
+                    new Question()
+                    {
                         QuestionId = "1",
                         Options = new[]
                         {
@@ -30,36 +28,44 @@ namespace FormDraftService.Controllers
                             "Voll motiviert!"
                         },
                         Text = "Wie fühlen Sie sich heute?"
-                        }
+                    }
                 }
             }
         };
 
 
-        // GET api/<DraftController>/5
+        // GET api/Draft/{id}
         [HttpGet("{id}")]
-        public FormDraft Get(string id)
+        public ActionResult<FormDraft> Get(string id)
         {
-            return _allFormDrafts.Where(x => x.FormId == id).First();
+            return _allFormDrafts.FirstOrDefault(x => x.FormId == id) is FormDraft draft
+                ? Ok(draft)
+                : NotFound();
         }
 
-        // POST api/<DraftController>
+        // POST api/Draft
         [HttpPost]
-        public void Post([FromBody] FormDraft value)
+        public ActionResult<FormDraft> Post([FromBody] FormDraft value)
         {
+            if (_allFormDrafts.Any(x => x.FormId == value.FormId))
+            {
+                return Conflict();
+            }
+
             _allFormDrafts.Add(value);
+
+            return value;
         }
 
-        // PUT api/<DraftController>/5
+        // PUT api/Draft/{id}
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult<FormDraft> Put(int id, [FromBody] FormDraft value)
         {
-        }
+            // Replace the object in our list
+            _allFormDrafts.RemoveAll(x => x.FormId == value.FormId);
+            _allFormDrafts.Add(value);
 
-        // DELETE api/<DraftController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return value;
         }
     }
 }

@@ -2,9 +2,9 @@
 {
     public class Question
     {
-        public String QuestionId { get; set; }
-        public String Text { get; set; }
-        public IEnumerable<string> Options { get; set; }
+        public string QuestionId { get; set; } = string.Empty;
+        public string Text { get; set; } = string.Empty;
+        public IEnumerable<string> Options { get; set; } = new List<string>();
     }
 
 }
