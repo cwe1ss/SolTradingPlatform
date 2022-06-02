@@ -22,8 +22,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormDraftService", "FormDra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuestionnaireAnswersService", "QuestionnaireAnswersService\QuestionnaireAnswersService.csproj", "{143DAE0C-6F39-4D54-B99A-699C4F6258F1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuestionnaireFilledEvent", "QuestionnaireFilledEvent\QuestionnaireFilledEvent.csproj", "{5BE8A922-2FE6-45EB-9B09-EF0D7E993C26}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuestionnaireResultsService", "QuestionnaireResultsService\QuestionnaireResultsService.csproj", "{9D7F7AB3-8A9E-4BE4-AEAA-B88AB34DA11D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConfigService", "ConfigService\ConfigService.csproj", "{C94A9CAE-0822-45AD-84AD-B83E206B10DC}"
@@ -31,6 +29,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecretService", "SecretService\SecretService.csproj", "{A4ED5047-7641-48B6-932C-28BD36034C30}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormPublishService", "FormPublishService\FormPublishService.csproj", "{116ED8EF-B6EB-4F4F-BFF8-D2B05A9D3D32}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paymentservice", "Paymentservice\Paymentservice.csproj", "{355AF612-5FAE-4EF9-AD4A-6FB574EFA4F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,10 +62,6 @@ Global
 		{143DAE0C-6F39-4D54-B99A-699C4F6258F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{143DAE0C-6F39-4D54-B99A-699C4F6258F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{143DAE0C-6F39-4D54-B99A-699C4F6258F1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5BE8A922-2FE6-45EB-9B09-EF0D7E993C26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5BE8A922-2FE6-45EB-9B09-EF0D7E993C26}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5BE8A922-2FE6-45EB-9B09-EF0D7E993C26}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5BE8A922-2FE6-45EB-9B09-EF0D7E993C26}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9D7F7AB3-8A9E-4BE4-AEAA-B88AB34DA11D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9D7F7AB3-8A9E-4BE4-AEAA-B88AB34DA11D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D7F7AB3-8A9E-4BE4-AEAA-B88AB34DA11D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -82,6 +78,10 @@ Global
 		{116ED8EF-B6EB-4F4F-BFF8-D2B05A9D3D32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{116ED8EF-B6EB-4F4F-BFF8-D2B05A9D3D32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{116ED8EF-B6EB-4F4F-BFF8-D2B05A9D3D32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{355AF612-5FAE-4EF9-AD4A-6FB574EFA4F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{355AF612-5FAE-4EF9-AD4A-6FB574EFA4F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{355AF612-5FAE-4EF9-AD4A-6FB574EFA4F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{355AF612-5FAE-4EF9-AD4A-6FB574EFA4F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
