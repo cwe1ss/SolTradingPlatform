@@ -18,7 +18,7 @@ namespace FormPublishService.Controllers
             _httpClientFactory = httpClientFactory;
         }
         
-        // POST api/publish
+        // POST api/Publish
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> Post(string formId)
@@ -31,8 +31,6 @@ namespace FormPublishService.Controllers
             // -------------------------------------
             // Publish form
 
-            //var formDraftClient = _httpClientFactory.CreateClient("FormDraftService");
-            //await formDraftClient.PostAsJsonAsync("/api/")
             PublishedFormIds.Add(formId);
 
             // -------------------------------------
