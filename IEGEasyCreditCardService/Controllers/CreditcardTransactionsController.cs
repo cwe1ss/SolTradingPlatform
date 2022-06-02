@@ -1,5 +1,4 @@
 ﻿using IEGEasyCreditCardService.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IEGEasyCreditCardService.Controllers
@@ -8,28 +7,41 @@ namespace IEGEasyCreditCardService.Controllers
     [ApiController]
     public class CreditcardTransactionsController : ControllerBase
     {
+        private static readonly Dictionary <string,CreditcardTransaction> CreditcardTransactions = new();
+
         private readonly ILogger<CreditcardTransactionsController> _logger;
-        private static Dictionary <String,CreditcardTransaction> _creditcardTransactions = new();
 
         public CreditcardTransactionsController(ILogger<CreditcardTransactionsController> logger)
         {
             _logger = logger;
         }
+
         [HttpGet]
-        public object Get(string id)
+        public ActionResult<CreditcardTransaction> Get(string id)
         {
-            //_logger.LogInformation("Hallo");
-            return _creditcardTransactions[id];
+            _logger.LogInformation("transaction {id} requested", id);
+
+            if (CreditcardTransactions.TryGetValue(id, out var transaction))
+            {
+                return transaction;
+            }
+            else
+            {
+                return NotFound();
+            }
         }
-        // POST api/values
+
         [HttpPost]
         public IActionResult Post([FromBody] CreditcardTransaction creditcardTransaction)
         {
-            _logger.LogInformation($"TransactionInfo Number: {creditcardTransaction.CreditcardNumber} Amount:{creditcardTransaction.Amount} Receiver: { creditcardTransaction.ReceiverName}");
-            //log geht mit IEG
-            string id = System.Guid.NewGuid().ToString();
-            _creditcardTransactions.Add(id,creditcardTransaction);
-            return CreatedAtAction("Get", new { id });
+            _logger.LogInformation(
+                "TransactionInfo Number: {CreditcardNumber}; Amount: {Amount}; Receiver: {ReceiverName}",
+                creditcardTransaction.CreditcardNumber, creditcardTransaction.Amount, creditcardTransaction.ReceiverName);
+            
+            string id = Guid.NewGuid().ToString();
+            CreditcardTransactions.Add(id,creditcardTransaction);
+
+            return CreatedAtAction("Get", new { id }, creditcardTransaction);
         }
     }
 }
