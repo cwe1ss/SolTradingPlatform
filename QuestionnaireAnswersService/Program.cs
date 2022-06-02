@@ -6,6 +6,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddMvc(options => options.OutputFormatters.Add(new QuestionnaireAnswersService.CustomFormatter()));
+
 
 var app = builder.Build();
 

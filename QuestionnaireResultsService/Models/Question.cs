@@ -4,7 +4,6 @@
     {
         public String QuestionId { get; set; }
         public String Text { get; set; }
-        public String answer { get; set; }
         public IEnumerable<string> Options { get; set; }
     }
 }
