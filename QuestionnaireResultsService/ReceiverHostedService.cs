@@ -5,10 +5,10 @@ namespace QuestionnaireResultsService;
 public class ReceiverHostedService : BackgroundService
 {
     // connection string to your Service Bus namespace
-    string connectionString = "<NAMESPACE CONNECTION STRING>";
+    string connectionString = "Endpoint=sb://questionaire.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=urv9935Bu7PfYW7fxPvBQxr9GeP/dhCCKB3bW2zU7zU=";
 
     // name of your Service Bus queue
-    string queueName = "<QUEUE NAME>";
+    string queueName = "answers";
 
     // the client that owns the connection and can be used to create senders and receivers
     ServiceBusClient client;

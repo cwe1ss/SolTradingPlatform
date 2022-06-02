@@ -64,13 +64,6 @@ namespace QuestionnaireAnswersService.Controllers
                 FormId = formDraft.FormId
             };
 
-            // Get Service Bus Connection string from our secret service mit Christian besprochen
-  
-            //var secretsClient = _httpClientFactory.CreateClient("SecretService");
-
-         //   var secretResponse = await secretsClient.GetFromJsonAsync<SecretResponse>("/api/secrets/form-published-queue") // was muss ich hier genau eingeben 
-         //       ?? throw new InvalidOperationException("couldn't load connection string from secret service");
-
             // Publish event to Service Bus queue
             // https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dotnet-get-started-with-queues
             var serviceBusClient = new ServiceBusClient(connectionString);
