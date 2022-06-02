@@ -8,17 +8,17 @@ namespace ProductCatalogService.Controllers
     [ApiController]
     public class ProductListController : ControllerBase
     {
-        private static List<Product> _allProducts = new List<Product>()
+        private static readonly List<Product> AllProducts = new List<Product>()
         {
-            new Product(){ProductId=1,ProductName="Kürbiskernöl"},
-            new Product(){ProductId=2,ProductName="Schloßbergtropferl",}
+            new Product() {ProductId = 1, ProductName = "Kürbiskernöl"},
+            new Product() {ProductId = 2, ProductName = "Schloßbergtropferl"},
         };
 
         [HttpGet]
         [EnableQuery]
         public List<Product> Get()
         {
-            return _allProducts;
+            return AllProducts;
         }
     }
 }
