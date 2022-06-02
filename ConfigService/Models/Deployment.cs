@@ -3,7 +3,7 @@
     public class Deployment
     {
         public int Id { get; set; }
-        public string ServiceType  { get; set; } //z.B. Draft-Service
-        public string URL { get; set; }
+        public string ServiceType { get; set; } = string.Empty; // z.B. FormDraftService
+        public string URL { get; set; } = string.Empty;
     }
 }

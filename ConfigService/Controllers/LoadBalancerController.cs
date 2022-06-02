@@ -1,13 +1,11 @@
 ﻿using ConfigService.Models;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace ConfigService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoadBalancer : ControllerBase
+    public class LoadBalancerController : ControllerBase
     {
         public static IList<Deployment> DeploymentList = new List<Deployment>()
         {
@@ -25,14 +23,20 @@ namespace ConfigService.Controllers
             }
         };
 
-        // GET: api/<LoadBalancer>
-        [HttpGet("{ServiceType}")]
-        public string Get(string ServiceType)
+        // GET: api/LoadBalancer/{serviceType}
+        [HttpGet("{serviceType}")]
+        public ActionResult<string> Get(string serviceType)
         {
-            IList<Deployment> URL_list = DeploymentList.Where(element => element.ServiceType == ServiceType).ToList();
-            var random = new Random();
-            int index = random.Next(URL_list.Count);
-            return URL_list[index].URL;
+            List<Deployment> urlList = DeploymentList.Where(element => element.ServiceType == serviceType).ToList();
+            if (urlList.Count > 0)
+            {
+                int index = Random.Shared.Next(urlList.Count);
+                return urlList[index].URL;
+            }
+            else
+            {
+                return NotFound();
+            }
         }
     }
 }
