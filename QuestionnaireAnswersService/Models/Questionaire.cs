@@ -1,13 +1,14 @@
 ﻿using QuestionnaireAnswersService;
+using QuestionnaireAnswersService.Models;
 
-namespace FormDraftService.Models
+namespace QuestionnaireAnswersService
 {
     public class Questionaire
     {
-        public String FormId { get; set; }
+        public String QuestionaireId { get; set; }
         public String Name { get; set; }
         public String Status { get; set; }
         public String Description { get; set; }
         public IEnumerable<Question> Questions { get; set; }
-    }
+}
 }

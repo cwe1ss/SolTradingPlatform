@@ -1,6 +1,6 @@
 ﻿using Azure.Messaging.ServiceBus;
-using FormDraftService.Models;
 using Microsoft.AspNetCore.Mvc;
+using QuestionnaireAnswersService.Models;
 using SecretService.Models;
 using System.Text.Json;
 
@@ -14,54 +14,58 @@ namespace QuestionnaireAnswersService.Controllers
     public class QuestionnaireAnswersServiceController : ControllerBase
     {
 
-        private static List<Questionaire> _allFormDraft = new List<Questionaire>()
+        private static List<Questionaire> _allQuestionaire = new List<Questionaire>()
         {
-           // new FormDraft()
-           
+            // new Questionaire()
+
         };
-      
-        public static string FormDraftServiceBaseAddress = "https://configservice20220507144709.azurewebsites.net/";
+        private static List<Answer> _allAnswer = new List<Answer>()
+        {
+            // new Anwer()
+
+        };
+        private static List<Question> _allQuestion = new List<Question>()
+        {
+            // new Question()
+
+        };
+
+
+        //public static string FormDraftServiceBaseAddress = "https://configservice20220507144709.azurewebsites.net/";
 
         // connection string to  Service Bus namespace
         static string connectionString = "Endpoint=sb://questionaire.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=urv9935Bu7PfYW7fxPvBQxr9GeP/dhCCKB3bW2zU7zU=";
         // name of the Service Bus queue
 
-        [HttpGet("{serviceType}")]
-        public IActionResult Get(string serviceType)
-        {
-            //FormDraftService
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri(FormDraftServiceBaseAddress);
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            HttpResponseMessage response = client.GetAsync(FormDraftServiceBaseAddress + "/api/LoadBalancer/"+ serviceType).Result;
-            response.EnsureSuccessStatusCode();
-
-            return Ok(response.Content.ReadAsStringAsync().Result);
-
-
-        }
         [HttpGet]
         public object Get()
         {
-            return _allFormDraft;
+            return _allQuestion;
         }
 
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Post([FromBody] Questionaire formDraft)
+        public async Task<ActionResult> Post([FromBody] Questionaire questionaire)
         {
             //Ausgefüllten Fragebogen speichern 
-            _allFormDraft.Add(formDraft);
-    
+            _allQuestionaire.Add(questionaire);
+            getAllAnswer(_allQuestionaire);
+
+
+
             //send event to FragebogenAusgefülltEvent 
-           
+
             // Create event message
 
-            var formDraftEventMessage = new Questionaire
+            var questionaireEventMessage = new Questionaire
             {
-                FormId = formDraft.FormId
+                QuestionaireId = questionaire.QuestionaireId,
+                Name = questionaire.Name,
+                Status = questionaire.Status,
+                Description = questionaire.Description,
+          
+
             };
 
             // Publish event to Service Bus queue
@@ -69,7 +73,7 @@ namespace QuestionnaireAnswersService.Controllers
             var serviceBusClient = new ServiceBusClient(connectionString);
             await using ServiceBusSender? serviceBusSender = serviceBusClient.CreateSender("answers");
       
-            var jsonString = JsonSerializer.Serialize(formDraftEventMessage);
+            var jsonString = JsonSerializer.Serialize(questionaireEventMessage);
 
             var serviceBusMessage = new ServiceBusMessage(jsonString)
             {
@@ -79,12 +83,19 @@ namespace QuestionnaireAnswersService.Controllers
             };
 
             await serviceBusSender.SendMessageAsync(serviceBusMessage);
-
-            //return Ok(formDraft);
             return NoContent();
 
 
         }
 
+        private List<Question> getAllAnswer(List<Questionaire> allQuestionaire)
+        {
+
+            foreach (Questionaire questionaire in allQuestionaire)
+            {
+                _allQuestion.Add(questionaire.Questions.ElementAt(0));
+            }
+            return _allQuestion;
+        }
     }
 }

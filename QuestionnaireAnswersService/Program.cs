@@ -12,7 +12,7 @@ builder.Services.AddMvc(options => options.OutputFormatters.Add(new Questionnair
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
