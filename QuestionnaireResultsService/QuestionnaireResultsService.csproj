@@ -11,4 +11,8 @@
 	<PackageReference Include="Azure.Messaging.ServiceBus" Version="7.7.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\QuestionnaireAnswersService\QuestionnaireAnswersService.csproj" />
+  </ItemGroup>
+
 </Project>

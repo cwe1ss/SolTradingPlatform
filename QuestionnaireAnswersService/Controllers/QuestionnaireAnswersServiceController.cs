@@ -75,7 +75,7 @@ namespace QuestionnaireAnswersService.Controllers
             var serviceBusMessage = new ServiceBusMessage(jsonString)
             {
                 ContentType = "application/json",
-                Subject = "questionnaire_answered",
+                Subject = "answers_submitted",
                 MessageId = Guid.NewGuid().ToString(),
             };
 

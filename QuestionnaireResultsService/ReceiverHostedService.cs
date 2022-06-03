@@ -1,4 +1,5 @@
 ﻿using Azure.Messaging.ServiceBus;
+using QuestionnaireAnswersService;
 
 namespace QuestionnaireResultsService;
 
@@ -9,7 +10,10 @@ public class ReceiverHostedService : BackgroundService
 
     // name of your Service Bus queue
     string queueName = "answers";
-
+    private static Questionaire _questionaire = new Questionaire()
+    {
+        // new Questionaire()
+    };
     // the client that owns the connection and can be used to create senders and receivers
     ServiceBusClient client;
 
@@ -59,6 +63,7 @@ public class ReceiverHostedService : BackgroundService
         static async Task MessageHandler(ProcessMessageEventArgs args)
         {
             string body = args.Message.Body.ToString();
+            // body in _questionaire
             Console.WriteLine($"Received: {body}");
 
             // complete the message. message is deleted from the queue. 
