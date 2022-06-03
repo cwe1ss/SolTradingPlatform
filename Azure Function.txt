@@ -10,15 +10,13 @@ public static async Task<IActionResult> Run(HttpRequest req, ILogger log)
 {
     log.LogInformation("C# HTTP trigger function processed a request.");
 
-var deliverersArray = new[]
-{
-     new {name="DWo", price=12.5},
-     new {name="xVK", price=30.5},
-};
+    var deliverersArray = new[]
+    {
+         new {name="DWo", price=12.5},
+         new {name="xVK", price=30.5},
+    };
 
+    var deliverersJson = JsonConvert.SerializeObject(deliverersArray);
 
-var deliverersJson = JsonConvert.SerializeObject(deliverersArray);
-
-return new JsonResult(deliverersArray);
-
+    return new JsonResult(deliverersArray);
 }

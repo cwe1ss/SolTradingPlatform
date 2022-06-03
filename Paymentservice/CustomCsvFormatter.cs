@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Text;
 
-namespace Paymentservice
+namespace PaymentService
 {
     public class CustomCsvFormatter : TextOutputFormatter
     {

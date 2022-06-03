@@ -4,11 +4,13 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>2c63b027-531b-4a1e-ab48-f0ca9b32d5c2</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.7.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.15.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-	<PackageReference Include="Azure.Messaging.ServiceBus" Version="7.7.0" />
   </ItemGroup>
 
 </Project>

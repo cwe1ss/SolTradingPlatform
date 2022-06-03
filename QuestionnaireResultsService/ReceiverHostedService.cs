@@ -1,77 +1,109 @@
 ﻿using Azure.Messaging.ServiceBus;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
+using QuestionnaireResultsService.Models;
 
 namespace QuestionnaireResultsService;
 
 public class ReceiverHostedService : BackgroundService
 {
-    // connection string to your Service Bus namespace
-    string connectionString = "Endpoint=sb://questionaire.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=urv9935Bu7PfYW7fxPvBQxr9GeP/dhCCKB3bW2zU7zU=";
-
-    // name of your Service Bus queue
-    string queueName = "answers";
+    private readonly ILogger<ReceiverHostedService> _logger;
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly TelemetryClient _telemetryClient;
 
     // the client that owns the connection and can be used to create senders and receivers
-    ServiceBusClient client;
+    private ServiceBusClient? _serviceBusClient;
 
     // the processor that reads and processes messages from the queue
-    ServiceBusProcessor processor;
+    private ServiceBusProcessor? _serviceBusProcessor;
+
+    public ReceiverHostedService(ILogger<ReceiverHostedService> logger, IHttpClientFactory httpClientFactory, TelemetryClient telemetryClient)
+    {
+        _logger = logger;
+        _httpClientFactory = httpClientFactory;
+        _telemetryClient = telemetryClient;
+    }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        // Get Service Bus Connection string from our secret service
+
+        var secretsClient = _httpClientFactory.CreateClient("SecretService");
+
+        var secretResponse = await secretsClient.GetFromJsonAsync<SecretResponse>("/api/secrets/answers-queue", stoppingToken)
+                             ?? throw new InvalidOperationException("couldn't load connection string from secret service");
+
         // The Service Bus client types are safe to cache and use as a singleton for the lifetime
         // of the application, which is best practice when messages are being published or read
         // regularly.
         //
 
         // Create the client object that will be used to create sender and receiver objects
-        client = new ServiceBusClient(connectionString);
+        _serviceBusClient = new ServiceBusClient(secretResponse.SecretValue);
 
         // create a processor that we can use to process the messages
-        processor = client.CreateProcessor(queueName, new ServiceBusProcessorOptions());
+        _serviceBusProcessor = _serviceBusClient.CreateProcessor("answers", new ServiceBusProcessorOptions());
 
-        try
+        _serviceBusProcessor.ProcessMessageAsync += MessageHandler;
+
+        _serviceBusProcessor.ProcessErrorAsync += ErrorHandler;
+
+        // start processing 
+        await _serviceBusProcessor.StartProcessingAsync(stoppingToken);
+
+        _logger.LogInformation("ServiceBusProcessor started");
+
+        stoppingToken.Register(() =>
         {
-            // add handler to process messages
-            processor.ProcessMessageAsync += MessageHandler;
+            _logger.LogInformation("ServiceBusProcessor stopping");
+            _serviceBusProcessor.StopProcessingAsync().GetAwaiter().GetResult();
 
-            // add handler to process any errors
-            processor.ProcessErrorAsync += ErrorHandler;
-
-            // start processing 
-            await processor.StartProcessingAsync();
-
-            Console.WriteLine("Wait for a minute and then press any key to end the processing");
-            Console.ReadKey();
-
-            // stop processing 
-            Console.WriteLine("\nStopping the receiver...");
-            await processor.StopProcessingAsync();
-            Console.WriteLine("Stopped receiving messages");
-        }
-        finally
-        {
             // Calling DisposeAsync on client types is required to ensure that network
             // resources and other unmanaged objects are properly cleaned up.
-            await processor.DisposeAsync();
-            await client.DisposeAsync();
-        }
+            _serviceBusProcessor.DisposeAsync().GetAwaiter().GetResult();
+            _serviceBusClient.DisposeAsync().GetAwaiter().GetResult();
+        });
+    }
 
-        // handle received messages
-        static async Task MessageHandler(ProcessMessageEventArgs args)
+    // handle received messages
+    async Task MessageHandler(ProcessMessageEventArgs args)
+    {
+        // Show each receive as a REQUEST in Application Insights
+        // https://docs.microsoft.com/en-us/azure/azure-monitor/app/custom-operations-tracking
+
+        var requestTelemetry = new RequestTelemetry {Name = "MSG answers-queue"};
+        requestTelemetry.Context.Operation.Id = args.Message.MessageId;
+
+        var operation = _telemetryClient.StartOperation(requestTelemetry);
+        try
         {
+            // Process the actual message
+
             string body = args.Message.Body.ToString();
-            Console.WriteLine($"Received: {body}");
+
+            _logger.LogInformation("Received Message {Body}", body);
 
             // complete the message. message is deleted from the queue. 
             await args.CompleteMessageAsync(args.Message);
         }
-
-        // handle any errors when receiving messages
-        static Task ErrorHandler(ProcessErrorEventArgs args)
+        catch (Exception ex)
         {
-            Console.WriteLine(args.Exception.ToString());
-            return Task.CompletedTask;
+            _telemetryClient.TrackException(ex);
+            throw;
         }
+        finally
+        {
+            _telemetryClient.StopOperation(operation);
 
+            // For demo purposes: Make sure we don't have to wait long for it to pop up in App Insights
+            _telemetryClient.Flush();
+        }
+    }
+
+    // handle any errors when receiving messages
+    Task ErrorHandler(ProcessErrorEventArgs args)
+    {
+        _logger.LogError(args.Exception, "Error on receive!");
+        return Task.CompletedTask;
     }
 }

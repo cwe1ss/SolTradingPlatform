@@ -10,7 +10,7 @@ namespace MeiShop.Controllers
     {
         //https://docs.microsoft.com/en-us/aspnet/web-api/overview/advanced/calling-a-web-api-from-a-net-client
 
-        private const string CreditcardServiceBaseAddress = "https://iegeasycreditcardservice2022.azurewebsites.net/";
+        private const string CreditcardServiceBaseAddress = "https://ieg-creditcard1.azurewebsites.net/";
 
         private readonly ILogger<PaymentMethodsController> _logger;
         private readonly IConfiguration _configuration;

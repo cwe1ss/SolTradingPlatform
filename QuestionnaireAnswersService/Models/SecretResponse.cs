@@ -1,4 +1,4 @@
-﻿namespace QuestionnaireResultsService.Models
+﻿namespace QuestionnaireAnswersService.Models
 {
     public class SecretResponse
     {

@@ -13,13 +13,13 @@ namespace ConfigService.Controllers
             {
                 Id = 1,
                 ServiceType = "FormDraftService",
-                URL = "https://formdraftservice20220507143259.azurewebsites.net"
+                URL = "https://ieg-form-draft1.azurewebsites.net"
             },
             new Deployment()
             {
                 Id = 2,
                 ServiceType = "FormDraftService",
-                URL = "https://formdraftservice20220507145531.azurewebsites.net"
+                URL = "https://ieg-form-draft2.azurewebsites.net"
             }
         };
 
