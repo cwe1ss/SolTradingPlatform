@@ -21,7 +21,6 @@ public class ReceiverHostedService : BackgroundService
         // The Service Bus client types are safe to cache and use as a singleton for the lifetime
         // of the application, which is best practice when messages are being published or read
         // regularly.
-        //
 
         // Create the client object that will be used to create sender and receiver objects
         client = new ServiceBusClient(connectionString);

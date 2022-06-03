@@ -1,7 +1,6 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Microsoft.AspNetCore.Mvc;
 using QuestionnaireAnswersService.Models;
-using SecretService.Models;
 using System.Text.Json;
 
 
@@ -17,12 +16,14 @@ namespace QuestionnaireAnswersService.Controllers
         private static List<Questionaire> _allQuestionaire = new List<Questionaire>()
         {
             // new Questionaire()
-
+        };
+        private static Questionaire _questionaire = new Questionaire()
+        {
+            // new Questionaire()
         };
         private static List<Answer> _allAnswer = new List<Answer>()
         {
-            // new Anwer()
-
+            // new Answer()
         };
         private static List<Question> _allQuestion = new List<Question>()
         {
@@ -50,20 +51,17 @@ namespace QuestionnaireAnswersService.Controllers
         {
             //Ausgefüllten Fragebogen speichern 
             _allQuestionaire.Add(questionaire);
-            getAllAnswer(_allQuestionaire);
-
+            setAllAnswer(questionaire);
 
             //send event to FragebogenAusgefülltEvent 
-
             // Create event message
-
             var questionaireEventMessage = new Questionaire
             {
                 QuestionaireId = questionaire.QuestionaireId,
                 Name = questionaire.Name,
                 Status = questionaire.Status,
                 Description = questionaire.Description,
-          
+                Questions = questionaire.Questions,
 
             };
 
@@ -84,17 +82,13 @@ namespace QuestionnaireAnswersService.Controllers
             await serviceBusSender.SendMessageAsync(serviceBusMessage);
             return NoContent();
 
-
         }
 
-        private List<Question> getAllAnswer(List<Questionaire> allQuestionaire)
+        private void setAllAnswer(Questionaire questionaire)
         {
-
-            foreach (Questionaire questionaire in allQuestionaire)
-            {
-                _allQuestion.Add(questionaire.Questions.ElementAt(0));
-            }
-            return _allQuestion;
+            List<Question> _allMyQuestions = new List<Question>();
+            _allMyQuestions = Enumerable.ToList(questionaire.Questions);
+            _allQuestion = _allMyQuestions;
         }
     }
 }
