@@ -12,18 +12,19 @@ namespace QuestionnaireAnswersService.Controllers
 
         private static List<Questionnaire> _allQuestionaire = new List<Questionnaire>()
         {
-            // new Questionaire()
-
+            // new Questionnaire()
+        };
+        private static Questionnaire _questionaire = new Questionnaire()
+        {
+            // new Questionnaire()
         };
         private static List<Answer> _allAnswer = new List<Answer>()
         {
-            // new Anwer()
-
+            // new Answer()
         };
         private static List<Question> _allQuestion = new List<Question>()
         {
             // new Question()
-
         };
 
         private readonly IHttpClientFactory _httpClientFactory;
@@ -47,10 +48,9 @@ namespace QuestionnaireAnswersService.Controllers
             //Ausgefüllten Fragebogen speichern
 
             _allQuestionaire.Add(questionnaire);
-            getAllAnswer(_allQuestionaire);
+            setAllAnswer(questionnaire);
 
             // Create event message
-
             var questionnaireAnsweredEvent = new QuestionnaireAnsweredEvent
             {
                 Questionnaire = questionnaire,
@@ -80,15 +80,14 @@ namespace QuestionnaireAnswersService.Controllers
 
             await serviceBusSender.SendMessageAsync(serviceBusMessage);
             return NoContent();
+
         }
 
-        private List<Question> getAllAnswer(List<Questionnaire> allQuestionaire)
+        private void setAllAnswer(Questionnaire questionaire)
         {
-            foreach (Questionnaire questionaire in allQuestionaire)
-            {
-                _allQuestion.Add(questionaire.Questions.ElementAt(0));
-            }
-            return _allQuestion;
+            List<Question> _allMyQuestions = new List<Question>();
+            _allMyQuestions = Enumerable.ToList(questionaire.Questions);
+            _allQuestion = _allMyQuestions;
         }
     }
 }
