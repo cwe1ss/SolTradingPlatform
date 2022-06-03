@@ -53,7 +53,6 @@ namespace QuestionnaireAnswersService.Controllers
             getAllAnswer(_allQuestionaire);
 
 
-
             //send event to FragebogenAusgefülltEvent 
 
             // Create event message
