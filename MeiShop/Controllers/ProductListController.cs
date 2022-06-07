@@ -7,10 +7,10 @@ namespace MeiShop.Controllers
     [ApiController]
     public class ProductListController : ControllerBase
     {
-        public static string ProductCatalogServiceBaseAddress = "https://productcatalogservice20220402091449.azurewebsites.net";
+        public static string ProductCatalogServiceBaseAddress = "https://ieg-product-catalog.azurewebsites.net";
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(ProductCatalogServiceBaseAddress);
@@ -19,7 +19,9 @@ namespace MeiShop.Controllers
             HttpResponseMessage response = client.GetAsync(ProductCatalogServiceBaseAddress + "/api/ProductList").Result;
             response.EnsureSuccessStatusCode();
 
-            return Ok(response.Content.ReadAsStringAsync().Result);
+            var content = await response.Content.ReadAsStringAsync();
+
+            return Ok(content);
         }
     }
 }

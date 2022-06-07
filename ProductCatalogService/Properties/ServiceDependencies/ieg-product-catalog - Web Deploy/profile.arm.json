@@ -21,7 +21,7 @@
     },
     "resourceName": {
       "type": "string",
-      "defaultValue": "ieg-creditcardservice2",
+      "defaultValue": "ieg-product-catalog",
       "metadata": {
         "description": "Name of the main resource to be created by this template."
       }

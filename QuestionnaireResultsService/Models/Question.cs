@@ -1,9 +1,9 @@
-﻿namespace QuestionnaireAnswersService
+﻿namespace QuestionnaireResultsService.Models
 {
     public class Question
     {
-        public String QuestionId { get; set; }
-        public String Text { get; set; }
-        public IEnumerable<string> Options { get; set; }
+        public string? QuestionId { get; set; }
+        public string? Text { get; set; }
+        public IEnumerable<string> Options { get; set; } = new List<string>();
     }
 }

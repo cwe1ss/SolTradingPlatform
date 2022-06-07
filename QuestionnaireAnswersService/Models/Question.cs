@@ -1,14 +1,11 @@
-﻿using QuestionnaireAnswersService.Models;
-
-namespace QuestionnaireAnswersService
+﻿namespace QuestionnaireAnswersService.Models
 {
     public class Question
     {
-        public String QuestionId { get; set; }
-        public String Text { get; set; }
-       // public String answer { get; set; }
-        public IEnumerable<string> Options { get; set; }
-        public Answer Answer { get; set; }
-
+        public string? QuestionId { get; set; }
+        public string? Text { get; set; }
+        // public String answer { get; set; }
+        public IEnumerable<string> Options { get; set; } = new List<string>();
+        public Answer? Answer { get; set; }
     }
 }

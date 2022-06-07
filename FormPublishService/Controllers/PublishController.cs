@@ -9,10 +9,10 @@ namespace FormPublishService.Controllers
     [ApiController]
     public class PublishController : ControllerBase
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-
         private static readonly HashSet<string> PublishedFormIds = new();
 
+        private readonly IHttpClientFactory _httpClientFactory;
+        
         public PublishController(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;

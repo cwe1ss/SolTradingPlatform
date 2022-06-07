@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using QuestionnaireAnswersService.Models;
 using System.Text.Json;
 
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace QuestionnaireAnswersService.Controllers
 {
     [Route("api/[controller]")]
@@ -13,13 +10,13 @@ namespace QuestionnaireAnswersService.Controllers
     public class QuestionnaireAnswersServiceController : ControllerBase
     {
 
-        private static List<Questionaire> _allQuestionaire = new List<Questionaire>()
+        private static List<Questionnaire> _allQuestionaire = new List<Questionnaire>()
         {
-            // new Questionaire()
+            // new Questionnaire()
         };
-        private static Questionaire _questionaire = new Questionaire()
+        private static Questionnaire _questionaire = new Questionnaire()
         {
-            // new Questionaire()
+            // new Questionnaire()
         };
         private static List<Answer> _allAnswer = new List<Answer>()
         {
@@ -28,15 +25,14 @@ namespace QuestionnaireAnswersService.Controllers
         private static List<Question> _allQuestion = new List<Question>()
         {
             // new Question()
-
         };
 
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        //public static string FormDraftServiceBaseAddress = "https://configservice20220507144709.azurewebsites.net/";
-
-        // connection string to  Service Bus namespace
-        static string connectionString = "Endpoint=sb://questionaire.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=urv9935Bu7PfYW7fxPvBQxr9GeP/dhCCKB3bW2zU7zU=";
-        // name of the Service Bus queue
+        public QuestionnaireAnswersServiceController(IHttpClientFactory httpClientFactory)
+        {
+            _httpClientFactory = httpClientFactory;
+        }
 
         [HttpGet]
         public object Get()
@@ -47,35 +43,38 @@ namespace QuestionnaireAnswersService.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> Post([FromBody] Questionaire questionaire)
+        public async Task<ActionResult> Post([FromBody] Questionnaire questionnaire)
         {
-            //Ausgefüllten Fragebogen speichern 
-            _allQuestionaire.Add(questionaire);
-            setAllAnswer(questionaire);
+            //Ausgefüllten Fragebogen speichern
 
-            //send event to FragebogenAusgefülltEvent 
+            _allQuestionaire.Add(questionnaire);
+            setAllAnswer(questionnaire);
+
             // Create event message
-            var questionaireEventMessage = new Questionaire
+            var questionnaireAnsweredEvent = new QuestionnaireAnsweredEvent
             {
-                QuestionaireId = questionaire.QuestionaireId,
-                Name = questionaire.Name,
-                Status = questionaire.Status,
-                Description = questionaire.Description,
-                Questions = questionaire.Questions,
-
+                Questionnaire = questionnaire,
             };
+
+            // Get Service Bus Connection string from our secret service
+
+            var secretsClient = _httpClientFactory.CreateClient("SecretService");
+
+            var secretResponse = await secretsClient.GetFromJsonAsync<SecretResponse>("/api/secrets/answers-queue")
+                                 ?? throw new InvalidOperationException("couldn't load connection string from secret service");
 
             // Publish event to Service Bus queue
             // https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-dotnet-get-started-with-queues
-            var serviceBusClient = new ServiceBusClient(connectionString);
+
+            var serviceBusClient = new ServiceBusClient(secretResponse.SecretValue);
             await using ServiceBusSender? serviceBusSender = serviceBusClient.CreateSender("answers");
       
-            var jsonString = JsonSerializer.Serialize(questionaireEventMessage);
+            var jsonString = JsonSerializer.Serialize(questionnaireAnsweredEvent);
 
             var serviceBusMessage = new ServiceBusMessage(jsonString)
             {
                 ContentType = "application/json",
-                Subject = "answers_submitted",
+                Subject = "questionnaire-answered",
                 MessageId = Guid.NewGuid().ToString(),
             };
 
@@ -84,7 +83,7 @@ namespace QuestionnaireAnswersService.Controllers
 
         }
 
-        private void setAllAnswer(Questionaire questionaire)
+        private void setAllAnswer(Questionnaire questionaire)
         {
             List<Question> _allMyQuestions = new List<Question>();
             _allMyQuestions = Enumerable.ToList(questionaire.Questions);

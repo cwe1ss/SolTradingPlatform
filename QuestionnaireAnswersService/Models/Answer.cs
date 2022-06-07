@@ -2,6 +2,6 @@
 {
     public class Answer
     {
-        public String Text { get; set; }
+        public string? Text { get; set; }
     }
 }
